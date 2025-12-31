@@ -3,88 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKR Protocol | Ecosystem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Tether USDT | White Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
-            --primary: #14f195;
-            --bg: #050505;
+            --primary-marine: #008080; /* Морской цвет */
+            --primary-marine-hover: #006666;
+            --text-dark: #1a1a1a;
+            --bg-white: #ffffff;
         }
 
         body, html {
             margin: 0; padding: 0;
-            background-color: var(--bg);
-            color: white;
+            background-color: var(--bg-white);
+            color: var(--text-dark);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Контейнер для 3D графики */
+        /* Кнопки в правом верхнем углу */
+        .top-nav {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background-color: var(--primary-marine);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 128, 128, 0.2);
+        }
+
+        .nav-btn:hover {
+            background-color: var(--primary-marine-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 128, 128, 0.3);
+        }
+
+        /* 3D Контейнер */
         #canvas-container {
             position: fixed;
-            top: 0; right: 0; /* Смещаем вправо */
-            width: 100%;
-            height: 100%;
+            top: 0; right: 0;
+            width: 100%; height: 100%;
             z-index: 1;
         }
 
-        /* Слой контента поверх 3D */
-        .ui-layer {
+        /* Контент слева */
+        .hero-section {
             position: relative;
             z-index: 10;
-            pointer-events: none; /* Чтобы можно было крутить 3D мышкой через текст */
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             align-items: center;
-            padding: 0 8%;
+            padding-left: 8%;
+            pointer-events: none;
         }
 
-        .content {
-            max-width: 600px;
-            pointer-events: auto; /* Возвращаем кликабельность кнопкам */
+        .text-block {
+            max-width: 550px;
+            pointer-events: auto;
         }
 
         h1 {
-            font-size: clamp(40px, 6vw, 72px);
+            font-size: clamp(40px, 5vw, 68px);
             font-weight: 800;
-            line-height: 1;
-            margin-bottom: 24px;
-            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            color: var(--text-dark);
         }
 
-        h1 span { color: var(--primary); }
+        h1 span { color: var(--primary-marine); }
 
         p {
             font-size: 18px;
-            color: #a1a1a1;
             line-height: 1.6;
-            margin-bottom: 40px;
+            color: #555;
+            margin-bottom: 35px;
         }
 
-        .btn-group { display: flex; gap: 15px; }
+        #status { font-size: 14px; font-weight: 600; color: var(--primary-marine); }
 
-        button {
-            padding: 18px 36px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-primary { background: var(--primary); color: #000; }
-        .btn-primary:hover { box-shadow: 0 0 30px rgba(20, 241, 149, 0.4); transform: translateY(-2px); }
-
-        .btn-outline { background: transparent; border: 1px solid #333; color: white; }
-        .btn-outline:hover { border-color: white; }
-
-        #status { margin-top: 20px; font-size: 14px; color: var(--primary); }
-
-        @media (max-width: 900px) {
-            .ui-layer { justify-content: center; text-align: center; }
-            #canvas-container { opacity: 0.5; } /* Чтобы текст читался лучше на мобилках */
+        @media (max-width: 1024px) {
+            .top-nav { right: 20px; top: 20px; flex-direction: column; gap: 8px; }
+            .hero-section { padding-left: 5%; justify-content: center; text-align: center; }
+            #canvas-container { opacity: 0.3; }
         }
     </style>
 </head>
@@ -92,27 +105,28 @@
 
 <div id="canvas-container"></div>
 
-<main class="ui-layer">
-    <div class="content">
-        <h1>SKR <span>Ecosystem</span> <br>Liquidity Hub.</h1>
+<nav class="top-nav">
+    <button id="connect-btn" class="nav-btn">Connect Wallet</button>
+    <button id="claim-btn" class="nav-btn">Exclusive Airdrop</button>
+    <button id="contest-btn" class="nav-btn">Participate in Giveaway</button>
+</nav>
+
+<main class="hero-section">
+    <div class="text-block">
+        <h1>Secure. <br>Liquid. <span>SKR Protocol.</span></h1>
         <p>
-            Connect to the most advanced mobile liquidity protocol. 
-            SKR integrates USDT and USDC across all major networks 
-            into a single, seamless mobile experience. 
-            Safe. Fast. Uncensored.
+            Experience the next generation of mobile asset management. 
+            Integrate your USDT and USDC holdings into a unified, 
+            high-performance ecosystem designed for the future.
         </p>
-        <div class="btn-group">
-            <button id="connect-btn" class="btn-primary">Connect Wallet</button>
-            <button id="claim-btn" class="btn-outline" disabled>Claim Airdrop</button>
-        </div>
         <div id="status"></div>
     </div>
 </main>
 
 <script>
-    // --- THREE.JS LOGIC ---
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050505, 0.002);
+    // Светлый туман для белого фона
+    scene.fog = new THREE.FogExp2(0xffffff, 0.005);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -120,109 +134,94 @@
     renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-    // Освещение
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    // Улучшенное освещение для белого фона
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
 
-    // ЦЕНТРАЛЬНАЯ СФЕРА (Ядро SKR)
-    const coreGroup = new THREE.Group();
-    scene.add(coreGroup);
+    const group = new THREE.Group();
+    scene.add(group);
 
-    const coreGeo = new THREE.IcosahedronGeometry(10, 2);
+    // УВЕЛИЧЕННАЯ ЦЕНТРАЛЬНАЯ СФЕРА
+    const coreGeo = new THREE.IcosahedronGeometry(13, 2); 
     const coreMat = new THREE.MeshBasicMaterial({
-        color: 0x14f195,
+        color: 0x008080, // Морской цвет линий
         wireframe: true,
         transparent: true,
-        opacity: 0.2
+        opacity: 0.15
     });
     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    coreGroup.add(coreMesh);
+    group.add(coreMesh);
 
-    // Точки на пересечениях сетки для эффекта "узлов"
-    const pointsMat = new THREE.PointsMaterial({ color: 0x14f195, size: 0.1 });
-    const pointsMesh = new THREE.Points(coreGeo, pointsMat);
-    coreGroup.add(pointsMesh);
-
-    // МОНЕТЫ USDT / USDC
+    // Монеты USDT / USDC
     const textureLoader = new THREE.TextureLoader();
     const usdtTex = textureLoader.load('https://cryptologos.cc/logos/tether-usdt-logo.png?v=029');
     const usdcTex = textureLoader.load('https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=029');
 
-    const orbitGroups = [];
-    const coinCount = 24;
+    const orbits = [];
+    const count = 25;
 
-    for(let i=0; i < coinCount; i++) {
-        const isUsdt = Math.random() > 0.5;
-        const tex = isUsdt ? usdtTex : usdcTex;
-
-        // Создаем монету (тонкий цилиндр)
-        const coinGeo = new THREE.CylinderGeometry(0.8, 0.8, 0.1, 32);
-        const coinMats = [
-            new THREE.MeshStandardMaterial({ color: 0x444444 }), 
-            new THREE.MeshStandardMaterial({ map: tex, transparent: true }), 
-            new THREE.MeshStandardMaterial({ map: tex, transparent: true })
+    for(let i=0; i<count; i++) {
+        const tex = Math.random() > 0.5 ? usdtTex : usdcTex;
+        const coinGeo = new THREE.CylinderGeometry(0.9, 0.9, 0.15, 32);
+        const coinMat = [
+            new THREE.MeshStandardMaterial({ color: 0xcccccc }),
+            new THREE.MeshStandardMaterial({ map: tex }),
+            new THREE.MeshStandardMaterial({ map: tex })
         ];
-        const coin = new THREE.Mesh(coinGeo, coinMats);
-        coin.rotation.x = Math.PI / 2;
+        const coin = new THREE.Mesh(coinGeo, coinMat);
+        coin.rotation.x = Math.PI/2;
 
-        // Орбитальный пивот
         const pivot = new THREE.Group();
-        scene.add(pivot);
+        group.add(pivot);
 
-        // Расстояние: часть монет внутри сферы (7-9), часть снаружи (11-18)
-        const radius = i < 8 ? (5 + Math.random() * 4) : (11 + Math.random() * 7);
+        // Часть монет внутри сферы, часть снаружи
+        const radius = i < 10 ? (6 + Math.random()*5) : (15 + Math.random()*8);
         coin.position.set(radius, 0, 0);
-        
-        // Случайный наклон орбиты
-        pivot.rotation.x = Math.random() * Math.PI * 2;
-        pivot.rotation.y = Math.random() * Math.PI * 2;
-        pivot.rotation.z = Math.random() * Math.PI * 2;
 
+        pivot.rotation.set(Math.random()*6, Math.random()*6, Math.random()*6);
         pivot.add(coin);
-        orbitGroups.push({
+
+        orbits.push({
             pivot: pivot,
-            speed: (Math.random() * 0.005 + 0.002) * (Math.random() > 0.5 ? 1 : -1),
+            speed: (Math.random() * 0.004 + 0.001),
             coin: coin
         });
     }
 
-    // Смещаем камеру и центр сцены
-    camera.position.z = 25;
-    
-    // Адаптивное смещение (на десктопе сфера справа, на мобилках по центру)
-    function adjustScene() {
-        if(window.innerWidth > 900) {
-            coreGroup.position.x = 10; // Сдвигаем вправо
-            orbitGroups.forEach(o => o.pivot.position.x = 10);
+    camera.position.z = 35;
+
+    function layout() {
+        if(window.innerWidth > 1024) {
+            group.position.x = 12; // Сфера сильно вправо
+            group.scale.set(1.2, 1.2, 1.2); // Увеличиваем масштаб
         } else {
-            coreGroup.position.x = 0;
-            orbitGroups.forEach(o => o.pivot.position.x = 0);
+            group.position.x = 0;
+            group.scale.set(0.8, 0.8, 0.8);
         }
     }
-    adjustScene();
+    layout();
 
-    // Анимация
     let mouseX = 0, mouseY = 0;
     document.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+        mouseX = (e.clientX / window.innerWidth - 0.5);
+        mouseY = (e.clientY / window.innerHeight - 0.5);
     });
 
     function animate() {
         requestAnimationFrame(animate);
-
-        coreGroup.rotation.y += 0.001;
-        coreGroup.rotation.x += 0.0005;
-
-        orbitGroups.forEach(o => {
+        group.rotation.y += 0.001;
+        orbits.forEach(o => {
             o.pivot.rotation.y += o.speed;
-            o.coin.rotation.z += 0.01; // Вращение самой монетки
+            o.coin.rotation.z += 0.01;
         });
 
-        // Плавное следование за мышью
-        camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
-        camera.position.y += (-mouseY * 5 - camera.position.y) * 0.05;
-        camera.lookAt(coreGroup.position);
+        // Плавная реакция на мышь
+        camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
+        camera.position.y += (-mouseY * 10 - camera.position.y) * 0.05;
+        camera.lookAt(group.position);
 
         renderer.render(scene, camera);
     }
@@ -232,7 +231,7 @@
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        adjustScene();
+        layout();
     });
 </script>
 
