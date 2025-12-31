@@ -1,22 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tether Style Animation</title>
+    <title>SKR Protocol | The Future of Mobile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
     <style>
-        body { 
-            margin: 0; 
-            overflow: hidden; /* Убираем скролл для демо */
-            background-color: #000; 
+        :root {
+            --primary: #14f195; /* Твой зеленый цвет */
+            --primary-hover: #0fe08b;
+            --bg-color: #050505;
+            --text-main: #ffffff;
+            --text-muted: #a1a1a1;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.05);
         }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- ФОНОВАЯ АНИМАЦИЯ --- */
         #canvas-container {
-            width: 100%;
-            height: 100vh;
-            position: absolute;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; /* Уводим назад */
+            pointer-events: none;
+        }
+
+        /* --- НАВИГАЦИЯ --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: fixed;
+            width: 90%;
             top: 0;
-            left: 0;
-            z-index: -1; /* Чтобы текст был поверх анимации */
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: white;
+            text-transform: uppercase;
+        }
+        .logo span { color: var(--primary); }
+
+        .nav-links button {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .nav-links button.primary {
+            background: var(--primary);
+            color: black;
+            border: none;
+            margin-left: 15px;
+        }
+        .nav-links button:hover { transform: translateY(-2px); }
+
+        /* --- ГЛАВНЫЙ ЭКРАН (HERO) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #a1a1a1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .cta-group { display: flex; gap: 20px; }
+        
+        .btn-main {
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-green { background: var(--primary); color: #000; }
+        .btn-green:hover { box-shadow: 0 0 20px rgba(20, 241, 149, 0.4); }
+        
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; }
+        .btn-outline:hover { border-color: white; }
+
+        /* --- СТАТИСТИКА (GLASS CARDS) --- */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 50px 5%;
+            margin-bottom: 100px;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            transition: 0.3s;
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        
+        .card h3 { color: var(--primary); font-size: 32px; margin: 0 0 10px 0; }
+        .card p { color: var(--text-muted); margin: 0; font-size: 14px; }
+
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 40px; }
+            .cta-group { flex-direction: column; }
+            .nav-links button { display: none; } /* Скрываем кнопки меню на мобильном для простоты */
+            .nav-links button.primary { display: block; width: 100%; margin: 0; }
         }
     </style>
 </head>
@@ -24,105 +156,140 @@
 
     <div id="canvas-container"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <nav>
+        <div class="logo">SKR <span>PROTOCOL</span></div>
+        <div class="nav-links">
+            <button id="connect-wallet-nav" class="primary">Connect Wallet</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Digital money for a <br>mobile-first world.</h1>
+        <p>
+            SKR is built to disrupt the app store monopoly. 
+            Instant transactions, zero gas fees for users, and community governance. 
+            Join the revolution today.
+        </p>
+        <div class="cta-group">
+            <button id="claim-btn" class="btn-main btn-green">Claim Airdrop</button>
+            <button class="btn-main btn-outline">Read Whitepaper</button>
+        </div>
+        <div id="status" style="margin-top: 20px; color: var(--primary);"></div>
+    </section>
+
+    <section class="stats-section">
+        <div class="card">
+            <h3>$3M+</h3>
+            <p>Liquidity Locked</p>
+        </div>
+        <div class="card">
+            <h3>< 1s</h3>
+            <p>Transaction Time</p>
+        </div>
+        <div class="card">
+            <h3>150k+</h3>
+            <p>Active Holders</p>
+        </div>
+        <div class="card">
+            <h3>Zero</h3>
+            <p>Network Fees</p>
+        </div>
+    </section>
 
     <script>
-        // 1. Настройка сцены
         const scene = new THREE.Scene();
-        // Добавляем легкий туман, чтобы сфера плавно уходила в темноту (как на Tether)
-        scene.fog = new THREE.FogExp2(0x000000, 0.002);
+        scene.fog = new THREE.FogExp2(0x050505, 0.002); // Туман под цвет фона
 
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio); // Для четкости на iPhone/Mac
+        renderer.setPixelRatio(window.devicePixelRatio);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // 2. Создание Глобуса (Сферы)
-        // IcosahedronGeometry дает "треугольную" сетку, похожую на Tether
-        const geometry = new THREE.IcosahedronGeometry(10, 2); 
-
-        // Материал: Зеленые линии (Wireframe)
+        // Основная сфера
+        const geometry = new THREE.IcosahedronGeometry(12, 2); 
         const material = new THREE.MeshBasicMaterial({ 
-            color: 0x00ffa3, // Фирменный цвет Tether (бирюзово-зеленый)
+            color: 0x14f195, // Твой зеленый цвет
             wireframe: true,
             transparent: true,
-            opacity: 0.5
+            opacity: 0.3
         });
-
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
 
-        // 3. Дополнительная "аура" внутри (чтобы сфера не казалась пустой)
-        const innerGeometry = new THREE.IcosahedronGeometry(9.8, 2);
-        const innerMaterial = new THREE.MeshBasicMaterial({
-            color: 0x000000,
-            transparent: true,
-            opacity: 0.9
-        });
-        const innerSphere = new THREE.Mesh(innerGeometry, innerMaterial);
+        // Внутреннее ядро
+        const innerGeo = new THREE.IcosahedronGeometry(11, 1);
+        const innerMat = new THREE.MeshBasicMaterial({ color: 0x000000 }); // Черное ядро, чтобы скрыть задние линии
+        const innerSphere = new THREE.Mesh(innerGeo, innerMat);
         scene.add(innerSphere);
 
-        // 4. Частицы вокруг (звезды/пыль)
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 700;
+        // Частицы
+        const particlesGeo = new THREE.BufferGeometry();
+        const particlesCount = 1000;
         const posArray = new Float32Array(particlesCount * 3);
-
         for(let i = 0; i < particlesCount * 3; i++) {
-            // Раскидываем частицы вокруг сферы
-            posArray[i] = (Math.random() - 0.5) * 50;
+            posArray[i] = (Math.random() - 0.5) * 60;
         }
-
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.05,
-            color: 0x00ffa3,
+        particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMat = new THREE.PointsMaterial({
+            size: 0.03,
+            color: 0x14f195,
             transparent: true,
-            opacity: 0.8
+            opacity: 0.6
         });
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
         scene.add(particlesMesh);
 
-        // Позиция камеры
-        camera.position.z = 22;
+        // Смещаем сферу вправо, чтобы не мешала тексту
+        sphere.position.x = 8;
+        innerSphere.position.x = 8;
+        
+        // Адаптация положения сферы под мобилки
+        if(window.innerWidth < 768) {
+            sphere.position.x = 0;
+            innerSphere.position.x = 0;
+            sphere.position.y = -5; // Вниз
+            innerSphere.position.y = -5;
+        }
 
-        // 5. Анимация
-        // Переменные для отслеживания мыши (эффект параллакса)
+        camera.position.z = 20;
+
         let mouseX = 0;
         let mouseY = 0;
-
-        document.addEventListener('mousemove', (event) => {
-            mouseX = event.clientX - window.innerWidth / 2;
-            mouseY = event.clientY - window.innerHeight / 2;
+        
+        // Плавное движение за мышью
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.05;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.05;
         });
 
         function animate() {
             requestAnimationFrame(animate);
-
-            // Вращение сферы
             sphere.rotation.y += 0.002;
-            sphere.rotation.x += 0.001;
-            
-            // Вращение частиц (в обратную сторону для глубины)
             particlesMesh.rotation.y -= 0.0005;
 
-            // Легкий наклон за мышкой (параллакс эффект как на Tether)
-            camera.position.x += (mouseX * 0.005 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 0.005 - camera.position.y) * 0.05;
-            camera.lookAt(scene.position);
+            camera.position.x += (mouseX * 0.01 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 0.01 - camera.position.y) * 0.05;
+            camera.lookAt(0, 0, 0);
 
             renderer.render(scene, camera);
         }
-
         animate();
 
-        // 6. Адаптивность (если меняют размер окна)
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
+
+    <script>
+        // Твой код для кнопок:
+        // const connectBtn = document.getElementById('connect-wallet-nav');
+        // const claimBtn = document.getElementById('claim-btn');
+        // ...
+    </script>
+
 </body>
 </html>
