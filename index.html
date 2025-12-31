@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKR Protocol | Final Layout</title>
+    <title>SKR Protocol | Innovation Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
@@ -22,13 +22,13 @@
             height: 100vh;
         }
 
-        /* Кнопки в углу */
+        /* Кнопки навигации */
         .header-nav {
             position: fixed;
             top: 25px;
             right: 30px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             z-index: 1000;
         }
 
@@ -36,67 +36,79 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 16px;
+            padding: 10px 20px;
             border-radius: 8px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 128, 128, 0.2);
         }
 
-        .btn-nav:hover { transform: translateY(-2px); opacity: 0.9; }
+        .btn-nav:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-        /* Главная сетка */
+        /* Сетка макета */
         .layout {
             display: grid;
-            grid-template-columns: 45% 55%; /* Текст слева, Сфера справа */
+            grid-template-columns: 45% 55%;
             width: 100vw;
             height: 100vh;
         }
 
-        /* Секция с текстом */
+        /* Левая панель с текстом */
         .info-panel {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-left: 15%;
+            padding-left: 12%;
             z-index: 10;
         }
 
+        /* --- АНИМАЦИИ ТЕКСТА --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.5s; }
+
         h1 {
-            font-size: 68px;
+            font-size: clamp(40px, 5vw, 64px);
             font-weight: 800;
-            line-height: 1;
-            margin: 0 0 20px 0;
-            letter-spacing: -3px;
+            line-height: 1.1;
+            margin: 0 0 25px 0;
+            letter-spacing: -2px;
         }
 
         h1 span { color: var(--primary); }
 
         p {
-            font-size: 18px;
-            line-height: 1.6;
+            font-size: 17px;
+            line-height: 1.7;
             color: #555;
-            max-width: 450px;
+            max-width: 500px;
         }
 
-        /* Секция со сферой */
+        /* Правая панель с графикой */
         .visual-panel {
             position: relative;
-            width: 100%;
-            height: 100%;
-            /* Убираем любые перекрытия */
             overflow: hidden;
         }
 
-        #canvas-box {
-            width: 100%;
-            height: 100%;
-        }
+        #canvas-box { width: 100%; height: 100%; }
 
         @media (max-width: 1000px) {
             .layout { grid-template-columns: 100%; }
-            .info-panel { padding: 80px 5% 0; text-align: center; align-items: center; }
+            .info-panel { padding: 100px 5% 0; text-align: center; align-items: center; }
             .visual-panel { height: 50vh; }
             .header-nav { width: 100%; right: 0; justify-content: center; top: 10px; }
         }
@@ -112,9 +124,11 @@
 
 <div class="layout">
     <div class="info-panel">
-        <h1>Global<br><span>SKR Protocol</span><br>Network.</h1>
-        <p>
-            Масштабируемая экосистема ликвидности. Управляйте активами USDT и USDC в едином безопасном пространстве.
+        <h1 class="fade-in delay-1">Global<br><span>SKR Protocol</span><br>Network.</h1>
+        <p class="fade-in delay-2">
+            Disrupting the traditional financial system and paving the way for the digital use of traditional currencies. 
+            We support and empower growing enterprises and innovations within the blockchain space, 
+            driving the future of decentralized finance.
         </p>
     </div>
 
@@ -131,19 +145,19 @@
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     
     renderer.setSize(box.clientWidth, box.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(window.devicePixelRatio);
     box.appendChild(renderer.domElement);
 
     const group = new THREE.Group();
     scene.add(group);
 
-    // Большая сфера (размер 15 вместо 12)
-    const geo = new THREE.IcosahedronGeometry(15, 2); 
+    // СФЕРА (Размер 11 - оптимальный, не огромный)
+    const geo = new THREE.IcosahedronGeometry(11, 2); 
     const mat = new THREE.MeshBasicMaterial({
         color: 0x008080,
         wireframe: true,
         transparent: true,
-        opacity: 0.12
+        opacity: 0.15
     });
     group.add(new THREE.Mesh(geo, mat));
 
@@ -153,11 +167,11 @@
     const t2 = loader.load('https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=029');
 
     const coins = [];
-    for(let i=0; i<30; i++) {
+    for(let i=0; i<25; i++) {
         const tex = Math.random() > 0.5 ? t1 : t2;
-        const cGeo = new THREE.CylinderGeometry(1, 1, 0.15, 32);
+        const cGeo = new THREE.CylinderGeometry(0.8, 0.8, 0.1, 32);
         const cMat = [
-            new THREE.MeshStandardMaterial({ color: 0xeeeeee }),
+            new THREE.MeshStandardMaterial({ color: 0xdddddd }),
             new THREE.MeshStandardMaterial({ map: tex }),
             new THREE.MeshStandardMaterial({ map: tex })
         ];
@@ -167,16 +181,15 @@
         const pivot = new THREE.Group();
         group.add(pivot);
 
-        // Распределение: монеты теперь летают шире
-        const r = i < 10 ? (7 + Math.random()*7) : (16 + Math.random()*10);
+        const r = i < 10 ? (5 + Math.random()*5) : (13 + Math.random()*8);
         coin.position.set(r, 0, 0);
-        pivot.rotation.set(Math.random()*10, Math.random()*10, Math.random()*10);
+        pivot.rotation.set(Math.random()*6, Math.random()*6, Math.random()*6);
         pivot.add(coin);
-        coins.push({ pivot, speed: 0.002 + Math.random()*0.004, coin });
+        coins.push({ pivot, speed: 0.002 + Math.random()*0.003, coin });
     }
 
     scene.add(new THREE.AmbientLight(0xffffff, 1.5));
-    camera.position.z = 35; // Отдаляем камеру, так как сфера стала больше
+    camera.position.z = 28;
 
     let mx = 0, my = 0;
     document.addEventListener('mousemove', (e) => {
@@ -191,8 +204,8 @@
             c.pivot.rotation.y += c.speed;
             c.coin.rotation.z += 0.01;
         });
-        camera.position.x += (mx * 8 - camera.position.x) * 0.05;
-        camera.position.y += (-my * 8 - camera.position.y) * 0.05;
+        camera.position.x += (mx * 6 - camera.position.x) * 0.05;
+        camera.position.y += (-my * 6 - camera.position.y) * 0.05;
         camera.lookAt(0,0,0);
         renderer.render(scene, camera);
     }
