@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKR Protocol | Innovation Hub</title>
+    <title> Tether USDT | Innovation Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
@@ -11,6 +11,8 @@
             --primary: #008080;
             --text: #111;
             --bg: #ffffff;
+            --shadow-color: rgba(0, 128, 128, 0.15);
+            --gradient-bg: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
         }
         body, html {
             margin: 0; padding: 0;
@@ -39,9 +41,9 @@
             font-size: 13px;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 128, 128, 0.2);
+            box-shadow: 0 4px 10px var(--shadow-color);
         }
-        .btn-nav:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-nav:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 6px 15px var(--shadow-color); }
         /* Сетка макета */
         .layout {
             display: grid;
@@ -56,12 +58,17 @@
             justify-content: center;
             padding-left: 12%;
             z-index: 10;
-            position: relative;
+            background: var(--gradient-bg);
+            border-right: 1px solid rgba(0, 128, 128, 0.1);
         }
         .slider {
             position: relative;
             height: 60vh; /* Высота слайдера */
             overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            background: white;
+            padding: 30px;
         }
         .slide {
             position: absolute;
@@ -86,8 +93,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 20px rgba(0, 128, 128, 0.3);
+            box-shadow: 0 0 20px var(--shadow-color);
+            transition: transform 0.3s;
         }
+        .slide-logo:hover { transform: scale(1.05); }
         .slide-logo img {
             width: 80px;
         }
@@ -111,6 +120,7 @@
             line-height: 1.1;
             margin: 0 0 25px 0;
             letter-spacing: -2px;
+            text-shadow: 0 2px 4px var(--shadow-color);
         }
         h1 span { color: var(--primary); }
         p {
@@ -118,11 +128,25 @@
             line-height: 1.7;
             color: #555;
             max-width: 500px;
+            margin-bottom: 20px;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
+        .full-desc {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.6;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px var(--shadow-color);
         }
         /* Правая панель с графикой */
         .visual-panel {
             position: relative;
             overflow: hidden;
+            background: var(--gradient-bg);
         }
         #canvas-box { width: 100%; height: 100%; }
         @media (max-width: 1000px) {
@@ -148,6 +172,7 @@
                 </div>
                 <h1 class="fade-in delay-1">Defining the<br><span>Future of Money</span></h1>
                 <p class="fade-in delay-2">Tether tokens are the most widely adopted stablecoins, having pioneered the concept in the digital token space. A disruptor to the conventional financial system and a trailblazer in the digital use of traditional currencies, Tether tokens support and empower growing ventures and innovation throughout the blockchain space. Tether tokens exist as a digital token built on multiple blockchains.</p>
+                <div class="full-desc">Tether, launched in 2014, represents its own platform on the Omni blockchain, intended for using financial assets in digital format. Tether tokens are called stablecoins because they ensure price stability, as they are tied to fiat currencies. Tether tokens provide clients with the ability to conduct operations with traditional currencies without risks associated with volatility. All Tether tokens (USDT) are tied in a 1:1 ratio to the corresponding fiat currency and are backed by 100% of Tether's reserves. As a trusted company, we provide clients with daily information on our reserves. Tether tokens offer exceptional liquidity on Tier 1 exchanges, allowing traders to take advantage of arbitrage opportunities in the fastest time possible. Tether for merchants: For merchants, integrating Tether tokens opens up an array of opportunities for consumers to purchase products and services. Tether for exchanges: Tether tokens play a pivotal role in the digital token ecosystem and are the most actively traded in terms of 24-hour volume.</div>
             </div>
             <div class="slide">
                 <div class="slide-logo">
@@ -155,6 +180,7 @@
                 </div>
                 <h1 class="fade-in delay-1">100% Backed and<br><span>Fully Transparent</span></h1>
                 <p class="fade-in delay-2">All Tether tokens (USD₮) are pegged at 1-to-1 with a matching fiat currency and are backed 100% by Tether’s reserves. We publish a daily record of the current total assets and reserves.</p>
+                <div class="full-desc">All Tether tokens (USDT) are tied to the corresponding fiat currency in a 1:1 ratio and are backed by 100% of Tether's reserves. We publish daily data on current reserves. Tether tokens offer exceptional liquidity on Tier 1 exchanges, allowing traders to take advantage of arbitrage opportunities in the fastest time possible. Tether for merchants: For merchants, integrating Tether tokens opens up an array of opportunities for consumers to purchase products and services. Tether for exchanges: Tether tokens play a pivotal role in the digital token ecosystem and are the most actively traded in terms of 24-hour volume.</div>
             </div>
             <div class="slide">
                 <div class="slide-logo">
@@ -162,6 +188,7 @@
                 </div>
                 <h1 class="fade-in delay-1">Widespread<br><span>Adoption</span></h1>
                 <p class="fade-in delay-2">From being the first, to the most used, stablecoin, and one of the most traded tokens by volume, Tether tokens have come a long way. Tether tokens are today the most widely adopted stablecoins across major exchanges, OTC desks, and wallets.</p>
+                <div class="full-desc">Tether supports and empowers growing ventures and innovations in the blockchain sphere, stepping in as a digital token built on multiple blockchains. Tether tokens are the most widely adopted stablecoins, having pioneered the concept in the digital token space. A disruptor to the conventional financial system and a trailblazer in the digital use of traditional currencies, Tether tokens support and empower growing ventures and innovation throughout the blockchain space.</div>
             </div>
             <div class="slide">
                 <div class="slide-logo">
@@ -169,6 +196,15 @@
                 </div>
                 <h1 class="fade-in delay-1">The Token Disrupting<br><span>Global Finance</span></h1>
                 <p class="fade-in delay-2">Tether for Individuals: Tether tokens offer exceptional liquidity on tier one exchanges giving traders the ability to take advantage of arbitrage opportunities in the fastest time possible. Tether for Merchants: For merchants, integrating Tether tokens opens up an array of opportunities for consumers to purchase products and services. Tether for Exchanges: Tether tokens play a pivotal role in the digital token ecosystem and are the most actively traded in terms of 24-hour volume.</p>
+                <div class="full-desc">What is Tether? Tether, launched in 2014, represents its own platform on the Omni blockchain, intended for using financial assets in digital format. Tether tokens are called stablecoins because they ensure price stability, as they are tied to fiat currencies. Tether tokens provide clients with the ability to conduct operations with traditional currencies without risks associated with volatility. All Tether tokens (USDT) are tied in a 1:1 ratio to the corresponding fiat currency and are backed by 100% of Tether's reserves. As a trusted company, we provide clients with daily information on our reserves. Tether tokens offer exceptional liquidity on Tier 1 exchanges, allowing traders to take advantage of arbitrage opportunities in the fastest time possible. Tether for merchants: For merchants, integrating Tether tokens opens up an array of opportunities for consumers to purchase products and services. Tether for exchanges: Tether tokens play a pivotal role in the digital token ecosystem and are the most actively traded in terms of 24-hour volume. How do cryptocurrencies and tokens differ from Tether? Additional information can be found in the section "What is Tether".</div>
+            </div>
+            <div class="slide">
+                <div class="slide-logo">
+                    <img src="https://tether.to/images/logoMarkRed.svg" alt="Tether Logo">
+                </div>
+                <h1 class="fade-in delay-1">Formula of<br><span>Future Money</span></h1>
+                <p class="fade-in delay-2">Tether supports and empowers growing ventures and innovations in the blockchain sphere, stepping in as a digital token built on multiple blockchains.</p>
+                <div class="full-desc">The Formula of Future Money: Tether supports and empowers growing enterprises and innovations in the blockchain sphere, created on the basis of several blockchains.</div>
             </div>
         </div>
     </div>
